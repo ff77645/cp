@@ -8,8 +8,8 @@ import fs from 'fs-extra'
 import {File} from '../model/index.js'
 import {basename} from 'path'
 
-
-export async function copyFile(path, options,command) {
+export const handleCopy = async ctx =>{
+  const {path,options} = ctx.request.body
   const filePath = getFilePath(path)
   if(!isExist(filePath)) return log(`文件不存在${filePath}`)
   const destPath = getDestPath(filePath)
@@ -20,5 +20,18 @@ export async function copyFile(path, options,command) {
     origin_path:filePath,
   })
   console.log({filePath,path, options,destPath});
+
+
 }
 
+
+
+export const handlePaste = async ctx =>{
+  // TODO
+}
+
+
+export default {
+  handleCopy,
+  handlePaste,
+}
