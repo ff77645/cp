@@ -1,5 +1,10 @@
 import {Command } from 'commander'
 import {copyFile} from './src/copyFile.js'
+import {startServer} from './helper.js'
+import {initConfig} from './utils/index.js'
+
+initConfig()
+startServer()
 
 const program = new Command()
 

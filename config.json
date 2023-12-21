@@ -1,5 +1,5 @@
 {
-  "store":"D:/projectsnew/cp/store",
-  "port":9100,
-  "isRuning":false
+	"store": "D:/projectsnew/cp/store",
+	"port": 9100,
+	"isStarted": false
 }

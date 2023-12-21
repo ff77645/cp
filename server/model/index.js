@@ -3,7 +3,7 @@ import {getConfig} from '../utils/index.js'
 import {join} from 'path'
 
 
-const storage = join(getConfig().store,'data/database.sqlite')
+const storage = join(getConfig('store'),'data/database.sqlite')
 const sequelize = new Sequelize({
   dialect: 'sqlite',
   storage
