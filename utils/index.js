@@ -25,37 +25,11 @@ export function getFilePath(file) {
   return resolve(currentDir,file)
 }
 
-function generateFileName() {
+export function generateFileName() {
   const bytes = crypto.randomBytes(16);
   return bytes.toString("hex").substring(0, 15)
 }
 
-export function getDestPath(filePath) {
-  const dir = getConfig('store')
-  const path = (isDir(filePath) ? 'folder/' : 'files/') + generateFileName()
-  return resolve(dir,path)
-}
-
-export function getConfigPath(){
-  return resolve(homedir(),'.cp/config.json')
-}
-export function getConfig(key){
-  const configFile = fse.readJsonSync(getConfigPath())
-  return key ? configFile[key] : configFile
-}
-
-export function setConfig(key,value){
-  const configFile = getConfig()
-  configFile[key] = value
-  fse.writeJsonSync(getConfigPath(),configFile,{spaces:'\t'})
-}
-
-export function initConfig(){
-  const configPath = getConfigPath()
-  if(!fs.existsSync(configPath)){
-    const dir = dirname(process.argv[1])
-    const configData = fse.readJsonSync(resolve(dir,'config.json'))
-    configData.store = resolve(dir,'store')
-    fse.outputJsonSync(configPath,configData,{spaces:'\t'})
-  }
+export function pathToHash(path) {
+  return crypto.createHash('md5').update(path).digest('hex')
 }

@@ -1,7 +1,7 @@
-import {Sequelize,DataTypes } from 'sequelize'
-import {getConfig} from '../utils/index.js'
+import {Sequelize } from 'sequelize'
+import {getConfig} from '../../helper/index.js'
 import {join} from 'path'
-
+import FileModel from './file.js'
 
 const storage = join(getConfig('store'),'data/database.sqlite')
 const sequelize = new Sequelize({
@@ -16,15 +16,6 @@ try {
   console.error('数据库连接失败.', error);
 }
 
-export const File = sequelize.define('File', {
-  id: {
-    type: DataTypes.UUID,
-    defaultValue: DataTypes.UUIDV4,
-    primaryKey: true,
-  },
-  file_name:DataTypes.TEXT,
-  origin_path:DataTypes.TEXT,
-  current_path:DataTypes.TEXT,
-})
+export const File = sequelize.define('File', FileModel)
 
-await sequelize.sync();
+await sequelize.sync({alter:true});

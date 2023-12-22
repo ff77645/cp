@@ -1,7 +1,7 @@
 import Router from '@koa/router'
-import cliRouter from './cli.js'
-const router = new Router()
+import commandRouter from './command.js'
 
+const router = new Router()
 
 router.get('/', async (ctx) => {
   ctx.body = 'CP Cli Server Running.'
@@ -13,7 +13,8 @@ router.get('/exit',ctx=>{
 })
 
 
-router.use('/api',cliRouter.routes(),cliRouter.allowedMethods())
+router
+  .use('/api',commandRouter.routes())
 
 
 export default router

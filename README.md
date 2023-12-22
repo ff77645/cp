@@ -28,19 +28,16 @@ cp paste [name]
 
 ```mermaid
 sequenceDiagram
-    participant Workspace
     participant Cli
     participant Server
     participant Store
 
     par 复制
       Cli ->> Server: 请求
-      Workspace -->> Store: 将文件复制到Store
     end
 
     par 粘贴
       Cli ->> Server: 请求
-      Store -->> Workspace: 将文件粘贴到Store
     end
 
 ```
