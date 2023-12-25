@@ -1,6 +1,7 @@
 import {
   pathToHash,
   isDir,
+  isExist,
 } from '../../utils/index.js'
 import fs from 'fs-extra'
 import {File} from '../model/index.js'
@@ -9,17 +10,6 @@ import {
   getDestPath,
 } from '../../helper/index.js'
 import {Ok,Err} from '../../helper/result.js'
-
-/* 
-
-文件/文件夹:
-  1.根据路径生成哈希值
-
-  1.创建软链接
-  2.创建sql记录
-
-
-*/
 
 
 export const handleCopy = async (ctx) =>{
@@ -47,14 +37,13 @@ export const handlePaste = async ctx =>{
     limit:1,
   })
   const file = files[0]
-  if(file){
+  if(file && isExist(file.filePath)){
     const {file_path,file_name} = file
-    console.log({file_path,file_name});
     const dest = `${filePath}/${file_name}`
     fs.copySync(file_path,dest)
     ctx.body = Ok.msg(`${file_path} 已复制到: ${dest}`)
   }else{
-    ctx.body = Err.msg('暂无可复制内容')
+    ctx.body = Err.msg('暂无可复制内容',404)
   }
 }
 

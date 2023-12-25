@@ -1,9 +1,15 @@
+#!/usr/bin/env node
+
 import {Command } from 'commander'
 import {startServer,initConfig} from './helper/index.js'
-import {handleCopy,handlePaste} from './command/index.js'
+import {
+  handleCopy,
+  handlePaste,
+} from './command/index.js'
 
-initConfig()
-startServer()
+// initConfig()
+// startServer()
+console.log('启动成功');
 
 const program = new Command()
 
@@ -33,5 +39,6 @@ program
     console.log({name});
     console.log({options});
   })
+
 
 program.parse(process.argv)
