@@ -7,4 +7,4 @@ const hash = pathToHash(str)
 
 const hash2 = md5(str)
 
-console.log({hash,hash2});
+console.log({hash,hash2})

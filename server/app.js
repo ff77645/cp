@@ -12,17 +12,18 @@ const app = new Koa()
 
 app.use(KoaLogger())
 
-// app.use(WinstonLogger())
-// if(isDev){
-//     app.use(KoaLogger())
-// }else{
-//     app.use(KoaLogger((str,args)=>{
-//         const [ format, method, url, status, time ] = args
-//         if(!time) return
-//         logger.log('http',{method, url, status, time})
-//     }))
-    // app.use(HandleError)
-// }
+app.use(WinstonLogger())
+if(isDev){
+	app.use(KoaLogger())
+}else{
+	app.use(KoaLogger((str,args)=>{
+		// eslint-disable-next-line no-unused-vars
+		const [ format, method, url, status, time ] = args
+		if(!time) return
+		logger.log('http',{method, url, status, time})
+	}))
+	app.use(HandleError)
+}
 app.use(koaBody())
 app.use(router.routes())
 
@@ -46,11 +47,11 @@ app.use(router.routes())
 // })
 
 export function start(){
-    app.listen(PORT,()=>{
-        setConfig('isStarted',true)
-        // logger.info(`服务启动成功，端口号：${PORT}`)
-        console.log(`服务启动成功，端口号：${PORT}`);
-    })
+	app.listen(PORT,()=>{
+		setConfig('isStarted',true)
+		// logger.info(`服务启动成功，端口号：${PORT}`)
+		console.log(`服务启动成功，端口号：${PORT}`)
+	})
     
 }
 start()
