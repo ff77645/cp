@@ -9,7 +9,7 @@
     "prepare": "husky install"
   },
   "bin": {
-    "cp2": "./index.js"
+    "fm": "./index.js"
   },
   "keywords": [],
   "author": "",
