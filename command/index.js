@@ -1,8 +1,8 @@
 import request from '../utils/request.js'
 import { getFilePath } from '../helper/index.js'
 import { isExist,isDir } from '../utils/index.js'
-export async function handleCopy(path, options,command){
-	command
+export async function handleCopy(path, options){
+	
 	const filePath = getFilePath(path)
 	if(!isExist(filePath)) return console.log(`文件不存在${filePath}`)
 	const {tag,group} = options

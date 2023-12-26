@@ -1,18 +1,8 @@
-import {spawnSync} from 'child_process'
 import {dirname, resolve,isAbsolute} from 'path'
 import { isDir } from '../utils/index.js'
 import {homedir} from 'os'
 import fss from 'fs-extra'
 import fs from 'fs'
-
-export function startServer(){
-	if(getConfig('isStarted')) return
-	const filePath = resolve(dirname(process.argv[1]),'server/app.js')
-	spawnSync('node',[filePath],{
-		detached:true,
-		stdio:'ignore',
-	}).unref()
-}
 
 export function initConfig(){
 	const configPath = getConfigPath()
