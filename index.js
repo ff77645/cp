@@ -1,14 +1,13 @@
 #!/usr/bin/env node
 import {Command } from 'commander'
-import {startServer,initConfig} from './helper/index.js'
+import {initConfig} from './helper/index.js'
 import {
 	handleCopy,
 	handlePaste,
+	handleGroup,
 } from './command/index.js'
 
 initConfig()
-startServer()
-console.log('启动成功')
 
 const program = new Command()
 
@@ -16,7 +15,7 @@ const program = new Command()
 program
 	.command('copy [path]')
 	.description('拷贝文件(夹)')
-	.option('-t, --tag <string>','设置标签')
+	// .option('-t, --tag <string>','设置标签')
 	.option('-g, --group <string>','设置分组')
 	.action(handleCopy)
 
@@ -24,9 +23,16 @@ program
 program
 	.command('paste [path]')
 	.description('粘贴文件(夹)')
-// .option('-t, --tag <string>','指定标签')
+	.option('-g, --group <string>','指定分组')
 // .option('-i, --index <number>','拷贝列表索引')
 	.action(handlePaste)
+
+
+program.
+	command('group [path] [group]')
+	.description('设置分组')
+	.action(handleGroup)
+
 
 // 删除拷贝
 program

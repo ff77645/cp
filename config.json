@@ -1,5 +1,4 @@
 {
-	"store": "",
-	"port": 9100,
-	"isStarted": false
+	"store": "D:/projectsnew/cp/store",
+	"lastCopy":""
 }
