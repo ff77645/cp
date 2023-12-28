@@ -1,5 +1,6 @@
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
+import './styles/tailwind/style.css'
 import './styles/element/theme.scss'
 import ElementPlus from 'element-plus'
 
