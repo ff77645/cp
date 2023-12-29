@@ -26,19 +26,25 @@
       }"
       class="flex-none flex flex-row justify-between px-2 items-center"
     >
-      <div class="">
+      <div class="flex-1">
         <el-icon size="20px"><ArrowLeft /></el-icon>
       </div>
-      <div class="">首页</div>
-      <div
-        class="h-[32px] flex flex-row items-center gap-2 px-3 border border-solid border-[#EAEAEA] rounded-[16px]"
-      >
-        <el-icon size="18px"><MoreFilled /></el-icon>
-        <el-divider direction="vertical" />
-        <el-icon size="18px"><CirclePlusFilled /></el-icon>
+      <div style="flex: 2" class="text-center overflow-hidden text-ellipsis whitespace-nowrap">
+        首页
+      </div>
+      <div class="flex-1 flex justify-end">
+        <div
+          class="h-[32px] flex flex-row items-center gap-2 px-3 border border-solid border-[#EAEAEA] rounded-[16px]"
+        >
+          <el-icon size="18px"><MoreFilled /></el-icon>
+          <el-divider direction="vertical" />
+          <el-icon size="18px"><CirclePlusFilled /></el-icon>
+        </div>
       </div>
     </div>
-    <slot></slot>
+    <div class="flex-1 overflow-hidden">
+      <slot></slot>
+    </div>
   </section>
 </template>
 <script setup>
@@ -58,6 +64,7 @@ const navBarHeight = 46
 const screenHeight = 736
 const screenWidth = 414
 const now = useNow()
+
 const dateFormat = (date) => {
   date = unref(date)
   return `${date.getHours()}:${date.getMinutes()}`
