@@ -30,7 +30,7 @@
         <el-icon size="20px"><ArrowLeft /></el-icon>
       </div>
       <div style="flex: 2" class="text-center overflow-hidden text-ellipsis whitespace-nowrap">
-        首页
+        {{ title }}
       </div>
       <div class="flex-1 flex justify-end">
         <div
@@ -57,6 +57,10 @@ import {
   MoreFilled,
   CirclePlusFilled
 } from '@element-plus/icons-vue'
+
+defineProps({
+  title: String
+})
 
 const statusBarHeight = 20
 const navBarHeight = 46

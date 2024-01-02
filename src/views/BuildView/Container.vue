@@ -1,39 +1,47 @@
 <template>
   <main class="flex justify-center items-center" style="flex: 2">
-    <PhoneEmulate>
-      <TransitionGroup
-        ref="sortableRef"
-        type="transition"
-        tag="div"
-        name="fade"
-        class="h-full overflow-auto"
-      >
-        <Text
-          v-for="item in nodeList"
-          :key="item.type"
-          v-edit
-          :text="item.type"
-          isEdit
-          :config="textConfig"
-        ></Text>
-      </TransitionGroup>
+    <PhoneEmulate :title="currentPage.title">
+      <div ref="sortableRef" class="h-full overflow-auto overflow-x-hidden" @drop="onDrop">
+        <TransitionGroup type="transition" name="fade">
+          <Text
+            v-edit
+            isEdit
+            v-for="item in nodeList"
+            :key="item.type"
+            :text="item.type"
+            :config="textConfig"
+          ></Text>
+        </TransitionGroup>
+      </div>
     </PhoneEmulate>
   </main>
 </template>
 <script setup>
 import { ref } from 'vue'
 import PhoneEmulate from '@/components/PhoneEmulate.vue'
-import Text from '@/components/BaseComponent/Text/index.vue'
+import Text from '@/components/BasicComponent/Text/index.vue'
 import { useDraggable } from 'vue-draggable-plus'
-import { useCounterStore } from '@/stores/counter'
+import { useBuilderStore } from '@/stores/builder.js'
+import { storeToRefs } from 'pinia'
+const { currentPage } = storeToRefs(useBuilderStore())
 
 const sortableRef = ref(null)
-const { nodeList } = useCounterStore()
-useDraggable(sortableRef, nodeList, {
-  animation: 150,
-  onEnd() {
-    console.log({ nodeList })
+const nodeList = ref([
+  {
+    type: 'text'
+  },
+  {
+    type: 'text2'
+  },
+  {
+    type: 'text3'
+  },
+  {
+    type: 'text4'
   }
+])
+useDraggable(sortableRef, nodeList, {
+  animation: 150
 })
 
 const textConfig = {
@@ -42,6 +50,13 @@ const textConfig = {
     color: '#808080',
     fontSize: '14px'
   }
+}
+
+const onDrop = (val) => {
+  console.log('onDrop', val)
+  nodeList.value.push({
+    type: 'text' + nodeList.value.length + 1
+  })
 }
 </script>
 <style>

@@ -1,10 +1,13 @@
 <script setup>
 import { useTheme } from '@/hooks'
+import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
 useTheme()
 </script>
 
 <template>
-  <RouterView />
+  <el-config-provider :locale="zhCn">
+    <RouterView />
+  </el-config-provider>
 </template>
 
 <style>
