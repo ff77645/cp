@@ -10,7 +10,7 @@
       </div>
       <div class="flex flex-row flex-nowrap gap-6 items-center mt-4">
         <span class="text-nowrap text-[#666666] text-sm">背景颜色</span>
-        <el-color-picker v-model="currentPage.config.styles.backgroundColor" />
+        <el-color-picker v-model="currentPage.styles.backgroundColor" />
       </div>
       <div class="flex flex-row flex-nowrap gap-6 items-center mt-4">
         <span class="text-nowrap text-[#666666] text-sm">背景图片</span>
@@ -21,8 +21,8 @@
           :before-upload="beforeAvatarUpload"
         >
           <img
-            v-if="currentPage.config.styles.backgroundImage"
-            :src="currentPage.config.styles.backgroundImage"
+            v-if="currentPage.styles.backgroundImage"
+            :src="currentPage.styles.backgroundImage"
             class="avatar"
           />
           <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
@@ -33,7 +33,7 @@
       <span class="text-nowrap text-[#666666] text-sm">页面描述</span>
       <el-input
         class="mt-3"
-        v-model="currentPage.config.shareInfo.description"
+        v-model="currentPage.shareInfo.description"
         :rows="5"
         type="textarea"
         resize="none"
@@ -50,8 +50,8 @@
           :before-upload="beforeAvatarUpload"
         >
           <img
-            v-if="currentPage.config.shareInfo.backgroundImage"
-            :src="currentPage.config.shareInfo.backgroundImage"
+            v-if="currentPage.shareInfo.backgroundImage"
+            :src="currentPage.shareInfo.backgroundImage"
             class="avatar"
           />
           <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
@@ -67,11 +67,6 @@ import { useBuilderStore } from '@/stores/builder.js'
 import { storeToRefs } from 'pinia'
 
 const { currentPage } = storeToRefs(useBuilderStore())
-
-defineProps({
-  config: Object
-})
-
 const beforeAvatarUpload = (file) => {
   console.log({ file })
 }

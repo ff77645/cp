@@ -1,3 +1,9 @@
+import { v1 } from 'uuid'
+
+export function shortid() {
+  return v1().split('-')[0]
+}
+
 // 计算两个十六进制颜色的混合值
 export function mixColors(color1, color2, weight) {
   const rgb1 = hexToRgb(color1)

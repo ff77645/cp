@@ -6,6 +6,7 @@
           v-for="(item, index) in basicComponent"
           :key="index"
           class="w-[68px] h-[68px] rounded-lg text-[#464C5B] flex flex-col flex-nowrap justify-center items-center gap-2 cursor-pointer hover:text-[#BD8B46] shadow-[#BD8B46] hover:shadow-md"
+          :data-component="item.component"
         >
           <el-icon size="20px"><Memo /></el-icon>
           <span class="text-sm">{{ item.name }}</span>
@@ -19,17 +20,43 @@ import Collapse from '@/components/Collapse.vue'
 import { Memo } from '@element-plus/icons-vue'
 import { useDraggable } from 'vue-draggable-plus'
 import { ref } from 'vue'
+import { createCompnent } from '@/model/index'
+import { useBuilderStore } from '@/stores/builder.js'
+
+const builderStore = useBuilderStore()
 
 const basicComponent = [
   {
     name: '文本',
-    icon: Memo
+    icon: Memo,
+    component: 'Text'
+  },
+  {
+    name: '富文本',
+    icon: Memo,
+    component: 'RichText'
   }
 ]
 
 const dragRef = ref(null)
+let currentUid = ''
 
 useDraggable(dragRef, basicComponent, {
-  animation: 150
+  animation: 150,
+  group: { name: 'component', pull: 'clone', put: false },
+  sort: false,
+  clone(el, e) {
+    console.log('clone', el, e)
+    const instance = createCompnent(el.component)
+    console.log({ instance })
+    currentUid = instance.uid
+    return instance
+  },
+  onEnd() {
+    const component = builderStore.currentPage.components.find((item) => item.uid === currentUid)
+    if (!component) return
+    builderStore.setCurrentComponent(component)
+    console.log('select', { component })
+  }
 })
 </script>

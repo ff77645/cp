@@ -1,63 +1,63 @@
 <template>
   <main class="flex justify-center items-center" style="flex: 2">
     <PhoneEmulate :title="currentPage.title">
-      <div ref="sortableRef" class="h-full overflow-auto overflow-x-hidden" @drop="onDrop">
+      <div ref="sortableRef" class="h-full overflow-auto overflow-x-hidden">
         <TransitionGroup type="transition" name="fade">
-          <Text
-            v-edit
+          <component
             isEdit
-            v-for="item in nodeList"
-            :key="item.type"
-            :text="item.type"
-            :config="textConfig"
-          ></Text>
+            v-for="item in currentPage.components"
+            v-edit="item.uid === currentComponent.uid"
+            :key="item.uid"
+            :is="item.name"
+            :config="item.config"
+            :style="item.style"
+            :data="item"
+            @click="selectComponent(item)"
+          ></component>
         </TransitionGroup>
       </div>
     </PhoneEmulate>
   </main>
 </template>
-<script setup>
-import { ref } from 'vue'
+<script>
+import { computed, ref, defineComponent } from 'vue'
 import PhoneEmulate from '@/components/PhoneEmulate.vue'
-import Text from '@/components/BasicComponent/Text/index.vue'
+import BaseText from '@/components/BasicComponent/BaseText/index.vue'
 import { useDraggable } from 'vue-draggable-plus'
 import { useBuilderStore } from '@/stores/builder.js'
 import { storeToRefs } from 'pinia'
-const { currentPage } = storeToRefs(useBuilderStore())
 
-const sortableRef = ref(null)
-const nodeList = ref([
-  {
-    type: 'text'
+export default defineComponent({
+  name: 'Container',
+  components: {
+    PhoneEmulate,
+    BaseText
   },
-  {
-    type: 'text2'
-  },
-  {
-    type: 'text3'
-  },
-  {
-    type: 'text4'
+  setup() {
+    const builderStore = useBuilderStore()
+    const { currentPage, currentComponent } = storeToRefs(builderStore)
+    const sortableRef = ref(null)
+    const components = computed({
+      get: () => currentPage.value.components,
+      set: (val) => (currentPage.value.components = val)
+    })
+    useDraggable(sortableRef, components, {
+      animation: 150,
+      group: 'component'
+    })
+
+    const selectComponent = (component) => {
+      builderStore.setCurrentComponent(component)
+    }
+
+    return {
+      currentPage,
+      sortableRef,
+      selectComponent,
+      currentComponent
+    }
   }
-])
-useDraggable(sortableRef, nodeList, {
-  animation: 150
 })
-
-const textConfig = {
-  styles: {
-    padding: '16px 15px',
-    color: '#808080',
-    fontSize: '14px'
-  }
-}
-
-const onDrop = (val) => {
-  console.log('onDrop', val)
-  nodeList.value.push({
-    type: 'text' + nodeList.value.length + 1
-  })
-}
 </script>
 <style>
 .fade-move,

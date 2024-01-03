@@ -92,5 +92,4 @@ const setCurrentPage = (page) => {
   currentPage.value = page
   currentComponent.value = page
 }
-addPage()
 </script>

@@ -12,16 +12,17 @@
 <script setup>
 import { CopyDocument, Delete } from '@element-plus/icons-vue'
 import { onUnmounted } from 'vue'
+import { useBuilderStore } from '@/stores/builder.js'
 
-defineOptions({
-  name: 'EditPopover'
-})
+const { deleteCurrentComponent, copyCurrentComponent } = useBuilderStore()
 
 const onCopy = () => {
   console.log('EditPopover copy')
+  copyCurrentComponent()
 }
 const onDelete = () => {
   console.log('EditPopover delete')
+  deleteCurrentComponent()
 }
 
 onUnmounted(() => {
@@ -32,9 +33,20 @@ onUnmounted(() => {
 .v-edit {
   box-sizing: border-box;
   position: relative;
-  border: 1px dashed transparent;
-  &:focus {
-    border-color: #bd8b46;
+  // border: 1px dashed transparent;
+  // outline: none;
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 1px dashed #bd8b46;
   }
+  // &:focus {
+  // border-color: #bd8b46 !important;
+  // outline-color: #bd8b46 !important;
+  // }
 }
 </style>
