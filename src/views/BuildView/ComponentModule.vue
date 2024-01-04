@@ -29,12 +29,22 @@ const basicComponent = [
   {
     name: '文本',
     icon: Memo,
-    component: 'Text'
+    component: 'BaseText'
   },
   {
-    name: '富文本',
+    name: '标题',
     icon: Memo,
-    component: 'RichText'
+    component: 'BaseTitle'
+  },
+  {
+    name: '图片',
+    icon: Memo,
+    component: 'BaseImage'
+  },
+  {
+    name: '轮播图',
+    icon: Memo,
+    component: 'Swiper'
   }
 ]
 
@@ -56,7 +66,7 @@ useDraggable(dragRef, basicComponent, {
     const component = builderStore.currentPage.components.find((item) => item.uid === currentUid)
     if (!component) return
     builderStore.setCurrentComponent(component)
-    console.log('select', { component })
+    // console.log('select', { component })
   }
 })
 </script>

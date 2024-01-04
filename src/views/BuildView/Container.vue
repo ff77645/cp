@@ -1,6 +1,6 @@
 <template>
   <main class="flex justify-center items-center" style="flex: 2">
-    <PhoneEmulate :title="currentPage.title">
+    <PhoneEmulate @click="selectPage" :title="currentPage.title">
       <div ref="sortableRef" class="h-full overflow-auto overflow-x-hidden">
         <TransitionGroup type="transition" name="fade">
           <component
@@ -12,7 +12,7 @@
             :config="item.config"
             :style="item.style"
             :data="item"
-            @click="selectComponent(item)"
+            @click.stop="selectComponent(item)"
           ></component>
         </TransitionGroup>
       </div>
@@ -22,16 +22,22 @@
 <script>
 import { computed, ref, defineComponent } from 'vue'
 import PhoneEmulate from '@/components/PhoneEmulate.vue'
-import BaseText from '@/components/BasicComponent/BaseText/index.vue'
 import { useDraggable } from 'vue-draggable-plus'
 import { useBuilderStore } from '@/stores/builder.js'
 import { storeToRefs } from 'pinia'
+import BaseText from '@/components/BasicComponent/BaseText/index.vue'
+import BaseTitle from '@/components/BasicComponent/BaseTitle/index.vue'
+import BaseImage from '@/components/BasicComponent/BaseImage/index.vue'
+import Swiper from '@/components/BasicComponent/Swiper/index.vue'
 
 export default defineComponent({
   name: 'Container',
   components: {
     PhoneEmulate,
-    BaseText
+    BaseText,
+    BaseTitle,
+    BaseImage,
+    Swiper
   },
   setup() {
     const builderStore = useBuilderStore()
@@ -49,8 +55,13 @@ export default defineComponent({
     const selectComponent = (component) => {
       builderStore.setCurrentComponent(component)
     }
+    const selectPage = () => {
+      console.log('click')
+      selectComponent({})
+    }
 
     return {
+      selectPage,
       currentPage,
       sortableRef,
       selectComponent,

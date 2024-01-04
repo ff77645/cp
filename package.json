@@ -19,6 +19,7 @@
     "element-plus": "^2.4.4",
     "lodash-es": "^4.17.21",
     "pinia": "^2.1.7",
+    "swiper": "^11.0.5",
     "uuid": "^9.0.1",
     "vue": "^3.3.11",
     "vue-draggable-plus": "^0.3.3",

@@ -1,7 +1,10 @@
 <template>
   <div
-    class="absolute top-1 right-2 flex flex-row flex-nowrap items-center py-1 px-2 rounded"
-    style="box-shadow: 0px 2px 6px 1px rgba(0, 0, 0, 0.16)"
+    class="absolute z-50 top-1 right-2 flex flex-row flex-nowrap items-center py-1 px-2 rounded"
+    style="
+      box-shadow: 0px 2px 6px 1px rgba(0, 0, 0, 0.16);
+      background-color: rgba(255, 255, 255, 0.7);
+    "
     @click.stop
   >
     <el-icon @click="onCopy" size="18px" color="#BD8B46"><CopyDocument /></el-icon>
@@ -43,6 +46,7 @@ onUnmounted(() => {
     width: 100%;
     height: 100%;
     border: 1px dashed #bd8b46;
+    z-index: 10;
   }
   // &:focus {
   // border-color: #bd8b46 !important;

@@ -1,21 +1,23 @@
 import BaseModel from '../BaseModel'
 
-export default class BaseText extends BaseModel {
+export default class BaseTitle extends BaseModel {
   constructor() {
     super('component')
-    this.name = 'BaseText'
+    this.name = 'BaseTitle'
     this.style = {
       padding: '16px 15px',
       color: '#808080',
       fontSize: '14px',
       textAlign: 'left',
-      backgroundColor: '#FFFFFF',
-      border: '1px solid #FFFFFF',
-      borderColor: '#FFFFFF'
+      backgroundColor: '#FFFFFF'
     }
     this.config = {
-      text: '',
-      linkUrl: ''
+      title: '',
+      linkUrl: '',
+      type: 'traditional',
+      subtitle: '',
+      date: '',
+      author: ''
     }
   }
 }

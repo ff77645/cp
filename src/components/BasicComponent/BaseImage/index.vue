@@ -1,7 +1,11 @@
 <template>
   <div class="cursor-pointer relative box-border" :style="data.style">
-    <p v-if="!data.config.text && isEdit">点击编辑文本</p>
-    <p v-else>{{ data.config.text }}</p>
+    <img
+      :style="{ borderRadius: data.style.borderRadius }"
+      class="w-full"
+      :src="data.config.src"
+      loading="lazy"
+    />
   </div>
 </template>
 <script setup>
@@ -9,14 +13,6 @@ defineProps({
   isEdit: {
     type: Boolean,
     default: false
-  },
-  config: {
-    type: Object,
-    default: () => ({})
-  },
-  style: {
-    type: Object,
-    default: () => ({})
   },
   data: {
     type: Object,
