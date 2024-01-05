@@ -1,0 +1,57 @@
+.puzzle-wrap{
+  .puzzle{
+    gap: var(--puzzle-gap,12px);
+  }
+  .r2{
+    // 两个
+    grid-template-columns: 1fr 1fr;
+  }
+  .r3{
+    // 三个
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+  .r4{
+    // 四个
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+  }
+  .l2-r2{
+    // 左2右2
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+  }
+  .l1-r2{
+    // 左1右2
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    .puzzle-item:first-child{
+      grid-row-start: 1;
+      grid-row-end: 3;
+    }
+  }
+  .t1-b2{
+    // 上1下2
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    .puzzle-item:first-child{
+      grid-column-start: 1;
+      grid-column-end: 3;
+    }
+  }
+  .l1-r3{
+    // 左1右3
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+   .puzzle-item:first-child{
+      grid-row-start: 1;
+      grid-row-end: 4;
+      grid-column-start: 1;
+      grid-column-end: 3;
+    }
+    .puzzle-item:nth-child(2){
+      grid-row-start: 1;
+      grid-row-end: 3;
+      grid-column-start: 3;
+      grid-column-end: 5;
+    }
+  }
+}

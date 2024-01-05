@@ -45,6 +45,51 @@ const basicComponent = [
     name: '轮播图',
     icon: Memo,
     component: 'Swiper'
+  },
+  {
+    name: '拼图',
+    icon: Memo,
+    component: 'Puzzle'
+  },
+  {
+    name: '视频x',
+    icon: Memo,
+    component: 'BaseVideo'
+  },
+  {
+    name: '间隔x',
+    icon: Memo,
+    component: 'Space'
+  },
+  {
+    name: '分割线x',
+    icon: Memo,
+    component: 'Divider'
+  },
+  {
+    name: '项目x',
+    icon: Memo,
+    component: 'Project'
+  },
+  {
+    name: '产品x',
+    icon: Memo,
+    component: 'Product'
+  },
+  {
+    name: '搜索框x',
+    icon: Memo,
+    component: 'SearchBar'
+  },
+  {
+    name: '图文导航x',
+    icon: Memo,
+    component: 'GraphicNavigator'
+  },
+  {
+    name: '底部导航x',
+    icon: Memo,
+    component: 'TabBar'
   }
 ]
 
@@ -55,10 +100,9 @@ useDraggable(dragRef, basicComponent, {
   animation: 150,
   group: { name: 'component', pull: 'clone', put: false },
   sort: false,
-  clone(el, e) {
-    console.log('clone', el, e)
+  clone(el) {
     const instance = createCompnent(el.component)
-    console.log({ instance })
+    console.log('添加:', el.component)
     currentUid = instance.uid
     return instance
   },

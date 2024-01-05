@@ -1,7 +1,7 @@
 <template>
   <div class="bg-white p-4 overflow-auto">
     <template v-if="currentComponent && currentComponent.name">
-      <component :is="currentComponent.name" :key="currentComponent.uid"></component>
+      <component :is="currentComponent.name + 'Config'" :key="currentComponent.uid"></component>
     </template>
     <PageConfig v-else></PageConfig>
   </div>
@@ -10,20 +10,22 @@
 import { defineComponent } from 'vue'
 import { useBuilderStore } from '@/stores/builder.js'
 import { storeToRefs } from 'pinia'
-import PageConfig from '@/components/BasicComponent/PageConfig/index.vue'
-import BaseText from '@/components/BasicComponent/BaseTextConfig/index.vue'
-import BaseTitle from '@/components/BasicComponent/BaseTitleConfig/index.vue'
-import BaseImage from '@/components/BasicComponent/BaseImageConfig/index.vue'
-import Swiper from '@/components/BasicComponent/SwiperConfig/index.vue'
+
+const baseConfigFile = import.meta.glob('@/components/BasicComponent/*Config/index.vue', {
+  eager: true,
+  import: 'default'
+})
+const baseConfigComp = Object.keys(baseConfigFile).reduce((result, path) => {
+  const name = path.split('/').at(-2)
+  result[name] = baseConfigFile[path]
+  return result
+}, {})
+baseConfigComp.BaseConfig = undefined
 
 export default defineComponent({
   name: 'AsideRight',
   components: {
-    PageConfig,
-    BaseText,
-    BaseTitle,
-    BaseImage,
-    Swiper
+    ...baseConfigComp
   },
   setup() {
     const { currentComponent } = storeToRefs(useBuilderStore())

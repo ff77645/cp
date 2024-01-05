@@ -1,5 +1,5 @@
 <template>
-  <div class="cursor-pointer relative box-border" :style="data.style">
+  <div class="relative box-border" :style="data.style">
     <img
       :style="{ borderRadius: data.style.borderRadius }"
       class="w-full"

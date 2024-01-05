@@ -70,12 +70,12 @@
 <script setup>
 import { MoreFilled, Edit, House } from '@element-plus/icons-vue'
 import { useBuilderStore } from '@/stores/builder.js'
-import { PageScheme } from '@/schema/pageScheme.js'
 import { storeToRefs } from 'pinia'
+import Page from '@/model/Basic/Page'
 const { pageStack, currentPage, currentComponent } = storeToRefs(useBuilderStore())
 
 const addPage = () => {
-  const page = new PageScheme('页面' + pageStack.value.length)
+  const page = new Page('页面' + pageStack.value.length)
   page.uid = pageStack.value.length
   pageStack.value.push(page)
   currentPage.value = page

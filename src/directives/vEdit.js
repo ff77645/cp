@@ -38,7 +38,7 @@ function handleFocus(e) {
 
 export const vEdit = function (el, binding, vnode) {
   // el.setAttribute('tabindex', tabindex++)
-  // el.classList.add('v-edit')
+  el.classList.add('cursor-pointer')
   context = vnode?.ctx?.appContext
   // el.addEventListener('click', handleFocus)
   // el.addEventListener('blur', handleDestory)

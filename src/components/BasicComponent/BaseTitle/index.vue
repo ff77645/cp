@@ -1,5 +1,5 @@
 <template>
-  <div class="cursor-pointer relative" :style="data.style">
+  <div class="relative" :style="data.style">
     <div>
       <p v-if="!data.config.title && isEdit">点击编辑【标题】</p>
       <p v-else>{{ data.config.title }}</p>

@@ -9,8 +9,6 @@
             v-edit="item.uid === currentComponent.uid"
             :key="item.uid"
             :is="item.name"
-            :config="item.config"
-            :style="item.style"
             :data="item"
             @click.stop="selectComponent(item)"
           ></component>
@@ -25,19 +23,24 @@ import PhoneEmulate from '@/components/PhoneEmulate.vue'
 import { useDraggable } from 'vue-draggable-plus'
 import { useBuilderStore } from '@/stores/builder.js'
 import { storeToRefs } from 'pinia'
-import BaseText from '@/components/BasicComponent/BaseText/index.vue'
-import BaseTitle from '@/components/BasicComponent/BaseTitle/index.vue'
-import BaseImage from '@/components/BasicComponent/BaseImage/index.vue'
-import Swiper from '@/components/BasicComponent/Swiper/index.vue'
+
+const baseCompFile = import.meta.glob(
+  ['@/components/BasicComponent/*/index.vue', '!@/components/BasicComponent/*Config/index.vue'],
+  { eager: true, import: 'default' }
+)
+console.log({ baseCompFile })
+
+const baseComponents = Object.keys(baseCompFile).reduce((result, path) => {
+  const name = path.split('/').at(-2)
+  result[name] = baseCompFile[path]
+  return result
+}, {})
 
 export default defineComponent({
   name: 'Container',
   components: {
     PhoneEmulate,
-    BaseText,
-    BaseTitle,
-    BaseImage,
-    Swiper
+    ...baseComponents
   },
   setup() {
     const builderStore = useBuilderStore()

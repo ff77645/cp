@@ -12,8 +12,14 @@
         <span class="text-[#464C5B]"> 首页</span>
       </div>
       <div class="flex flex-row flex-nowrap gap-5 text-[#999999] text-xl cursor-pointer">
-        <el-icon><Back /></el-icon>
-        <el-icon><Right /></el-icon>
+        <el-icon @click="handleBack" :color="currentIndex <= 0 ? '#999999' : '#BD8B46'"
+          ><Back
+        /></el-icon>
+        <el-icon
+          @click="handleForward"
+          :color="currentIndex + 1 >= storeCache.length ? '#999999' : '#BD8B46'"
+          ><Right
+        /></el-icon>
       </div>
     </div>
     <!-- header-right -->
@@ -31,4 +37,57 @@
 import { Back, Right } from '@element-plus/icons-vue'
 import FullScreen from '@/components/FullScreen.vue'
 import HeaderBack from './components/HeaderBack.vue'
+import { useBuilderStore } from '@/stores/builder.js'
+import { toRaw, unref, shallowReactive, ref, watch } from 'vue'
+import { cloneDeep } from 'lodash-es'
+
+let storeCache = shallowReactive([])
+const currentIndex = ref(0)
+let isClone = true
+
+const builderStore = useBuilderStore()
+
+watch(
+  builderStore.currentPage,
+  (value) => {
+    if (!isClone) {
+      isClone = true
+      return
+    }
+    if (currentIndex.value !== storeCache.length - 1) {
+      storeCache = storeCache.slice(0, currentIndex.value + 1)
+    }
+    const cloneValue = cloneDeep(toRaw(unref(value)))
+    storeCache.push(cloneValue)
+    currentIndex.value = storeCache.length - 1
+    console.log({ storeCache, cloneValue, currentIndex: currentIndex.value })
+  },
+  {
+    immediate: true,
+    deep: true,
+    flush: 'post'
+  }
+)
+
+const handleBack = () => {
+  isClone = false
+  if (currentIndex.value < 1) return
+  currentIndex.value--
+  const value = storeCache.at(currentIndex.value)
+  // console.log({storeCache,value,currentIndex:currentIndex.value});
+  builderStore.$patch({
+    currentPage: cloneDeep(value)
+  })
+}
+
+const handleForward = () => {
+  isClone = false
+  if (currentIndex.value >= storeCache.length - 1) return
+  currentIndex.value++
+  const value = storeCache.at(currentIndex.value)
+  // console.log({storeCache,value,currentIndex:currentIndex.value});
+  builderStore.$patch({
+    currentPage: cloneDeep(value)
+  })
+}
 </script>

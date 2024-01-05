@@ -1,5 +1,5 @@
 <template>
-  <div class="cursor-pointer relative box-border" :style="data.style">
+  <div class="relative box-border" :style="data.style">
     <swiper class="h-60" :allowTouchMove="false">
       <swiper-slide class="w-full" v-for="(item, idx) in data.config.imgList" :key="idx">
         <el-image class="w-full" :src="item.src"></el-image>

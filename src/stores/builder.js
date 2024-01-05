@@ -1,11 +1,11 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import { PageScheme } from '@/schema/pageScheme'
+import Page from '@/model/Basic/Page'
 import { cloneDeep } from 'lodash-es'
 import { shortid } from '@/utils'
 
 export const useBuilderStore = defineStore('builder', () => {
-  const home = new PageScheme('首页')
+  const home = new Page('首页')
   const pageStack = ref([home])
   const currentPage = ref(home)
   const currentComponent = ref({})
