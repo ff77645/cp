@@ -18,7 +18,7 @@
   </main>
 </template>
 <script>
-import { computed, ref, defineComponent } from 'vue'
+import { computed, ref, defineComponent, toRaw } from 'vue'
 import PhoneEmulate from '@/components/PhoneEmulate.vue'
 import { useDraggable } from 'vue-draggable-plus'
 import { useBuilderStore } from '@/stores/builder.js'
@@ -48,7 +48,9 @@ export default defineComponent({
     const sortableRef = ref(null)
     const components = computed({
       get: () => currentPage.value.components,
-      set: (val) => (currentPage.value.components = val)
+      set: (val) => {
+        currentPage.value.components = val.map(toRaw)
+      }
     })
     useDraggable(sortableRef, components, {
       animation: 150,
@@ -86,7 +88,7 @@ export default defineComponent({
   transform: scaleY(0.01) translate(30px, 0);
 }
 
-.fade-leave-active {
+/* .fade-leave-active {
   position: absolute;
-}
+} */
 </style>

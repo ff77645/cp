@@ -12,12 +12,10 @@
         <span class="text-[#464C5B]"> 首页</span>
       </div>
       <div class="flex flex-row flex-nowrap gap-5 text-[#999999] text-xl cursor-pointer">
-        <el-icon @click="handleBack" :color="currentIndex <= 0 ? '#999999' : '#BD8B46'"
+        <el-icon @click="handleBack" :color="currentIndex <= 1 ? '#999999' : '#BD8B46'"
           ><Back
         /></el-icon>
-        <el-icon
-          @click="handleForward"
-          :color="currentIndex + 1 >= storeCache.length ? '#999999' : '#BD8B46'"
+        <el-icon @click="handleForward" :color="currentIndex >= total ? '#999999' : '#BD8B46'"
           ><Right
         /></el-icon>
       </div>
@@ -38,12 +36,14 @@ import { Back, Right } from '@element-plus/icons-vue'
 import FullScreen from '@/components/FullScreen.vue'
 import HeaderBack from './components/HeaderBack.vue'
 import { useBuilderStore } from '@/stores/builder.js'
-import { toRaw, unref, shallowReactive, ref, watch } from 'vue'
-import { cloneDeep } from 'lodash-es'
+import { toRaw, unref, ref, watch, onUnmounted } from 'vue'
 
-let storeCache = shallowReactive([])
 const currentIndex = ref(0)
+const total = ref(0)
 let isClone = true
+
+const url = new URL('../../utils/page-stack.js', import.meta.url)
+const stackWorker = new Worker(url)
 
 const builderStore = useBuilderStore()
 
@@ -54,13 +54,19 @@ watch(
       isClone = true
       return
     }
-    if (currentIndex.value !== storeCache.length - 1) {
-      storeCache = storeCache.slice(0, currentIndex.value + 1)
+    // if (currentIndex.value !== storeCache.length - 1) {
+    //   storeCache = storeCache.slice(0, currentIndex.value + 1)
+    // }
+    // const cloneValue = cloneDeep(toRaw(unref(value)))
+    // storeCache.push(cloneValue)
+    // currentIndex.value = storeCache.length - 1
+    // console.log({ storeCache, cloneValue, currentIndex: currentIndex.value })
+    if (currentIndex.value !== total.value) {
+      stackWorker.postMessage({ type: 'update' })
     }
-    const cloneValue = cloneDeep(toRaw(unref(value)))
-    storeCache.push(cloneValue)
-    currentIndex.value = storeCache.length - 1
-    console.log({ storeCache, cloneValue, currentIndex: currentIndex.value })
+    const data = toRaw(unref(value))
+    console.log('watch data:', { data })
+    stackWorker.postMessage({ type: 'add', data })
   },
   {
     immediate: true,
@@ -70,24 +76,46 @@ watch(
 )
 
 const handleBack = () => {
-  isClone = false
-  if (currentIndex.value < 1) return
-  currentIndex.value--
-  const value = storeCache.at(currentIndex.value)
-  // console.log({storeCache,value,currentIndex:currentIndex.value});
-  builderStore.$patch({
-    currentPage: cloneDeep(value)
-  })
+  // isClone = false
+  // if (currentIndex.value < 1) return
+  // currentIndex.value--
+  // const value = storeCache.at(currentIndex.value)
+  // // console.log({storeCache,value,currentIndex:currentIndex.value});
+  // builderStore.$patch({
+  //   currentPage: cloneDeep(value)
+  // })
+  if (currentIndex.value <= 1) return
+  stackWorker.postMessage({ type: 'back' })
 }
 
 const handleForward = () => {
-  isClone = false
-  if (currentIndex.value >= storeCache.length - 1) return
-  currentIndex.value++
-  const value = storeCache.at(currentIndex.value)
-  // console.log({storeCache,value,currentIndex:currentIndex.value});
-  builderStore.$patch({
-    currentPage: cloneDeep(value)
-  })
+  if (currentIndex.value >= total.value) return
+  stackWorker.postMessage({ type: 'forward' })
+  // console.log('handleForward');
+  // isClone = false
+  // if (currentIndex.value >= storeCache.length - 1) return
+  // currentIndex.value++
+  // const value = storeCache.at(currentIndex.value)
+  // // console.log({storeCache,value,currentIndex:currentIndex.value});
+  // builderStore.$patch({
+  //   currentPage: cloneDeep(value)
+  // })
 }
+
+stackWorker.onmessage = ({ data }) => {
+  currentIndex.value = data.current
+  total.value = data.total
+  console.log({ data })
+  if (data.data) {
+    isClone = false
+    builderStore.$patch({
+      currentPage: data.data
+    })
+  }
+}
+// stackWorker.postMessage({type:'init'})
+onUnmounted(() => {
+  stackWorker.postMessage({ type: 'clear' })
+  stackWorker.terminate()
+})
 </script>
