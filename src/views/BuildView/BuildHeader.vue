@@ -12,12 +12,8 @@
         <span class="text-[#464C5B]"> 首页</span>
       </div>
       <div class="flex flex-row flex-nowrap gap-5 text-[#999999] text-xl cursor-pointer">
-        <el-icon @click="handleBack" :color="currentIndex <= 1 ? '#999999' : '#BD8B46'"
-          ><Back
-        /></el-icon>
-        <el-icon @click="handleForward" :color="currentIndex >= total ? '#999999' : '#BD8B46'"
-          ><Right
-        /></el-icon>
+        <el-icon @click="handleBack" :color="isFirst ? '#999999' : '#BD8B46'"><Back /></el-icon>
+        <el-icon @click="handleForward" :color="isLast ? '#999999' : '#BD8B46'"><Right /></el-icon>
       </div>
     </div>
     <!-- header-right -->
@@ -36,16 +32,39 @@ import { Back, Right } from '@element-plus/icons-vue'
 import FullScreen from '@/components/FullScreen.vue'
 import HeaderBack from './components/HeaderBack.vue'
 import { useBuilderStore } from '@/stores/builder.js'
-import { toRaw, unref, ref, watch, onUnmounted } from 'vue'
+import { toRaw, ref, onUnmounted, watch } from 'vue'
 
-const currentIndex = ref(0)
-const total = ref(0)
+// const currentIndex = ref(0)
+// const total = ref(0)
+const isFirst = ref(true)
+const isLast = ref(true)
 let isClone = true
 
-const url = new URL('../../utils/page-stack.js', import.meta.url)
+const url = new URL('../../utils/stack-worker.js', import.meta.url)
 const stackWorker = new Worker(url)
 
 const builderStore = useBuilderStore()
+
+// builderStore.$subscribe((mutation,state)=>{
+//   if (!isClone) {
+//     isClone = true
+//     return
+//   }
+//   const {
+//     currentComponent,
+//     currentPage
+//   } = state
+//   const data = {
+//     currentComponent:{
+//       uid:currentComponent.uid
+//     },
+//     currentPage:toRaw(currentPage),
+//   }
+//   // if (currentIndex.value !== total.value) {
+//   //   stackWorker.postMessage({ type: 'update' })
+//   // }
+//   stackWorker.postMessage({ type: 'add', data })
+// })
 
 watch(
   builderStore.currentPage,
@@ -61,16 +80,20 @@ watch(
     // storeCache.push(cloneValue)
     // currentIndex.value = storeCache.length - 1
     // console.log({ storeCache, cloneValue, currentIndex: currentIndex.value })
-    if (currentIndex.value !== total.value) {
-      stackWorker.postMessage({ type: 'update' })
+    // console.log('watch data:', { currentPage })
+    const currentPage = toRaw(value)
+    const data = {
+      currentPage,
+      currentComponent: {
+        uid: builderStore.currentComponent.uid
+      }
     }
-    const data = toRaw(unref(value))
-    console.log('watch data:', { data })
+    console.log('add')
     stackWorker.postMessage({ type: 'add', data })
   },
   {
     immediate: true,
-    deep: true,
+    // deep: true,
     flush: 'post'
   }
 )
@@ -84,12 +107,14 @@ const handleBack = () => {
   // builderStore.$patch({
   //   currentPage: cloneDeep(value)
   // })
-  if (currentIndex.value <= 1) return
+  // if (currentIndex.value <= 1) return
+  if (isFirst.value) return
   stackWorker.postMessage({ type: 'back' })
 }
 
 const handleForward = () => {
-  if (currentIndex.value >= total.value) return
+  // if (currentIndex.value >= total.value) return
+  if (isLast.value) return
   stackWorker.postMessage({ type: 'forward' })
   // console.log('handleForward');
   // isClone = false
@@ -103,14 +128,21 @@ const handleForward = () => {
 }
 
 stackWorker.onmessage = ({ data }) => {
-  currentIndex.value = data.current
-  total.value = data.total
-  console.log({ data })
+  // currentIndex.value = data.current
+  // total.value = data.total
+  isFirst.value = data.isFirst
+  isLast.value = data.isLast
+  console.log('onmessage', data)
   if (data.data) {
     isClone = false
+    const { currentComponent, currentPage } = data.data
+
+    // builderStore.currentPage = currentPage
     builderStore.$patch({
-      currentPage: data.data
+      currentPage
     })
+    builderStore.currentComponent =
+      builderStore.currentPage.components.find((i) => i.uid === currentComponent.uid) || {}
   }
 }
 // stackWorker.postMessage({type:'init'})
