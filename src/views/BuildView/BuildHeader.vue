@@ -33,63 +33,34 @@ import FullScreen from '@/components/FullScreen.vue'
 import HeaderBack from './components/HeaderBack.vue'
 import { useBuilderStore } from '@/stores/builder.js'
 import { toRaw, ref, onUnmounted, watch } from 'vue'
+import { debounce } from 'lodash-es'
 
-// const currentIndex = ref(0)
-// const total = ref(0)
 const isFirst = ref(true)
 const isLast = ref(true)
-let isClone = true
+let isRecord = true
 
 const url = new URL('../../utils/stack-worker.js', import.meta.url)
 const stackWorker = new Worker(url)
 
 const builderStore = useBuilderStore()
-
-// builderStore.$subscribe((mutation,state)=>{
-//   if (!isClone) {
-//     isClone = true
-//     return
-//   }
-//   const {
-//     currentComponent,
-//     currentPage
-//   } = state
-//   const data = {
-//     currentComponent:{
-//       uid:currentComponent.uid
-//     },
-//     currentPage:toRaw(currentPage),
-//   }
-//   // if (currentIndex.value !== total.value) {
-//   //   stackWorker.postMessage({ type: 'update' })
-//   // }
-//   stackWorker.postMessage({ type: 'add', data })
-// })
+const postMessage = debounce((data) => {
+  stackWorker.postMessage({ type: 'add', data })
+}, 300)
 
 watch(
   builderStore.currentPage,
   (value) => {
-    if (!isClone) {
-      isClone = true
+    if (!isRecord || builderStore.noRecord) {
+      isRecord = true
       return
     }
-    // if (currentIndex.value !== storeCache.length - 1) {
-    //   storeCache = storeCache.slice(0, currentIndex.value + 1)
-    // }
-    // const cloneValue = cloneDeep(toRaw(unref(value)))
-    // storeCache.push(cloneValue)
-    // currentIndex.value = storeCache.length - 1
-    // console.log({ storeCache, cloneValue, currentIndex: currentIndex.value })
-    // console.log('watch data:', { currentPage })
-    const currentPage = toRaw(value)
     const data = {
-      currentPage,
+      currentPage: toRaw(value),
       currentComponent: {
         uid: builderStore.currentComponent.uid
       }
     }
-    console.log('add')
-    stackWorker.postMessage({ type: 'add', data })
+    postMessage(data)
   },
   {
     immediate: true,
@@ -99,53 +70,28 @@ watch(
 )
 
 const handleBack = () => {
-  // isClone = false
-  // if (currentIndex.value < 1) return
-  // currentIndex.value--
-  // const value = storeCache.at(currentIndex.value)
-  // // console.log({storeCache,value,currentIndex:currentIndex.value});
-  // builderStore.$patch({
-  //   currentPage: cloneDeep(value)
-  // })
-  // if (currentIndex.value <= 1) return
   if (isFirst.value) return
   stackWorker.postMessage({ type: 'back' })
 }
 
 const handleForward = () => {
-  // if (currentIndex.value >= total.value) return
   if (isLast.value) return
   stackWorker.postMessage({ type: 'forward' })
-  // console.log('handleForward');
-  // isClone = false
-  // if (currentIndex.value >= storeCache.length - 1) return
-  // currentIndex.value++
-  // const value = storeCache.at(currentIndex.value)
-  // // console.log({storeCache,value,currentIndex:currentIndex.value});
-  // builderStore.$patch({
-  //   currentPage: cloneDeep(value)
-  // })
 }
 
 stackWorker.onmessage = ({ data }) => {
-  // currentIndex.value = data.current
-  // total.value = data.total
   isFirst.value = data.isFirst
   isLast.value = data.isLast
-  console.log('onmessage', data)
   if (data.data) {
-    isClone = false
+    isRecord = false
     const { currentComponent, currentPage } = data.data
-
-    // builderStore.currentPage = currentPage
     builderStore.$patch({
       currentPage
     })
     builderStore.currentComponent =
-      builderStore.currentPage.components.find((i) => i.uid === currentComponent.uid) || {}
+      currentPage.components.find((i) => i.uid === currentComponent.uid) || {}
   }
 }
-// stackWorker.postMessage({type:'init'})
 onUnmounted(() => {
   stackWorker.postMessage({ type: 'clear' })
   stackWorker.terminate()

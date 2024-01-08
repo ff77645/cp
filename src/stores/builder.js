@@ -9,6 +9,7 @@ export const useBuilderStore = defineStore('builder', () => {
   const pageStack = ref([home])
   const currentPage = ref(home)
   const currentComponent = ref({})
+  const noRecord = ref(false)
 
   const setCurrentPage = (page) => {
     currentPage.value = page
@@ -30,6 +31,7 @@ export const useBuilderStore = defineStore('builder', () => {
   }
 
   return {
+    noRecord,
     pageStack,
     currentPage,
     currentComponent,

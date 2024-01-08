@@ -13,7 +13,7 @@ class PageStack {
       isFirst: this.current === -Math.min(this.max, this.data.length),
       current: this.current
     }
-    console.log('this.current', this.current)
+    // console.log('this.current', this.current)
     if (!noData) {
       data.data = this.data.at(this.current)
     }
@@ -29,7 +29,6 @@ class PageStack {
     this.postMsg(true)
     if (this.data.length > this.cacheMax) {
       this.data = this.data.slice(this.data.length - this.max)
-      console.log('清除', this.data.length)
     }
   }
   // 回退
@@ -53,6 +52,6 @@ class PageStack {
 }
 const pageStack = new PageStack()
 onmessage = function ({ data }) {
-  console.log('worker event', data.type)
+  // console.log('worker event', data.type)
   pageStack[data.type](data.data)
 }

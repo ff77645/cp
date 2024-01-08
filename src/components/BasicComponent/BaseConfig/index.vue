@@ -16,21 +16,23 @@
 import Collapse from '@/components/Collapse.vue'
 import { useBuilderStore } from '@/stores/builder.js'
 import { storeToRefs } from 'pinia'
+// eslint-disable-next-line no-unused-vars
+import ElInput from '@/components/ElInput'
 
 const builderStore = useBuilderStore()
+// eslint-disable-next-line no-unused-vars
 const { currentComponent: m } = storeToRefs(builderStore)
-m
 const fontSize = [12, 14, 16, 18, 20]
 
+// eslint-disable-next-line no-unused-vars
 const textAlignConfig = [
   { label: '左', value: 'left' },
   { label: '中', value: 'center' },
   { label: '右', value: 'right' }
 ]
-textAlignConfig
+// eslint-disable-next-line no-unused-vars
 const fontSizeOptions = fontSize.map((item) => ({
   label: item + 'px',
   value: item
 }))
-fontSizeOptions
 </script>

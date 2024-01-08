@@ -52,27 +52,27 @@ const basicComponent = [
     component: 'Puzzle'
   },
   {
-    name: '视频x',
+    name: '视频',
     icon: Memo,
     component: 'BaseVideo'
   },
   {
-    name: '间隔x',
+    name: '间隔',
     icon: Memo,
     component: 'Space'
   },
   {
-    name: '分割线x',
+    name: '分割线',
     icon: Memo,
     component: 'Divider'
   },
+  // {
+  //   name: '项目',
+  //   icon: Memo,
+  //   component: 'Project'
+  // },
   {
-    name: '项目x',
-    icon: Memo,
-    component: 'Project'
-  },
-  {
-    name: '产品x',
+    name: '商品',
     icon: Memo,
     component: 'Product'
   },

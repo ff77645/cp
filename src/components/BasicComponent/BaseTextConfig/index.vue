@@ -69,6 +69,7 @@ import Collapse from '@/components/Collapse.vue'
 import { ref } from 'vue'
 import { useBuilderStore } from '@/stores/builder.js'
 import { storeToRefs } from 'pinia'
+import ElInput from '@/components/ElInput'
 
 const builderStore = useBuilderStore()
 const { currentComponent: m } = storeToRefs(builderStore)

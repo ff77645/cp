@@ -65,6 +65,7 @@ import Collapse from '@/components/Collapse.vue'
 import { Plus } from '@element-plus/icons-vue'
 import { useBuilderStore } from '@/stores/builder.js'
 import { storeToRefs } from 'pinia'
+import ElInput from '@/components/ElInput'
 
 const { currentPage } = storeToRefs(useBuilderStore())
 const beforeAvatarUpload = (file) => {

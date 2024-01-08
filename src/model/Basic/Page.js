@@ -13,5 +13,6 @@ export default class Page extends BaseModel {
       backgroundImage: ''
     }
     this.components = []
+    this.flag = 1
   }
 }
