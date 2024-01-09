@@ -23,24 +23,28 @@
           item.name
         }}</el-checkbox>
       </el-checkbox-group>
+      <p class="text-[#666666] text-sm mt-3">商品角标</p>
+      <el-radio-group v-model="m.config.markStyle" class="mt-3">
+        <el-radio v-for="i in markStyleList" :key="i.value" :label="i.value">{{ i.name }}</el-radio>
+      </el-radio-group>
     </Collapse>
     <Collapse class="" title="样式设置">
       <p class="text-[#666666] text-sm">商品样式</p>
       <el-radio-group v-model="m.config.productStyle" class="mt-3">
-        <el-radio label="noBorder">无边白底</el-radio>
-        <el-radio label="border">描边白底</el-radio>
+        <el-radio label="no-border">无边白底</el-radio>
+        <el-radio label="has-border">描边白底</el-radio>
       </el-radio-group>
       <p class="text-[#666666] text-sm mt-3">商品倒角</p>
-      <el-radio-group v-model="m.config.radius" class="mt-3">
-        <el-radio label="none">直角</el-radio>
-        <el-radio label="round">圆角</el-radio>
+      <el-radio-group v-model="m.style['--border-radius']" class="mt-3">
+        <el-radio label="0">直角</el-radio>
+        <el-radio label="4px">圆角</el-radio>
       </el-radio-group>
       <p class="text-[#666666] text-sm mt-3">图片比例</p>
       <el-radio-group v-model="m.config.imgScale" class="mt-3">
         <el-radio v-for="i in scaleRadios" :key="i.value" :label="i.value">{{ i.name }}</el-radio>
       </el-radio-group>
       <p class="text-[#666666] text-sm mt-3">文本样式</p>
-      <el-radio-group v-model="m.config.fontWeight" class="mt-3">
+      <el-radio-group v-model="m.style['--font-weight']" class="mt-3">
         <el-radio label="400">常规体</el-radio>
         <el-radio label="600">加粗体</el-radio>
       </el-radio-group>
@@ -152,6 +156,29 @@ const listStyles = [
   {
     name: '一行三个',
     value: 'three-row'
+  },
+  {
+    name: '一大两小',
+    value: 't1-b2'
+  }
+]
+
+const markStyleList = [
+  {
+    name: '样式一',
+    value: 'hot2'
+  },
+  {
+    name: '样式二',
+    value: 'new'
+  },
+  {
+    name: '样式三',
+    value: 'hot'
+  },
+  {
+    name: '样式四',
+    value: 'new2'
   }
 ]
 </script>

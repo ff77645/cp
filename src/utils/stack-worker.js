@@ -3,7 +3,7 @@
 class PageStack {
   constructor() {
     this.data = []
-    this.max = 10
+    this.max = 100
     this.current = -1
     this.cacheMax = this.max + Math.floor(this.max / 3)
   }

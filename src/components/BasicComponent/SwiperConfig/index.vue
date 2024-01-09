@@ -45,8 +45,8 @@
         <div
           v-for="t in indicatorType"
           :key="t"
-          :class="{ 'border-[#BD8B46]': m.config.indicatorType === t }"
-          class="border border-solid border-[#E6E6E6] p-2 rounded flex items-center"
+          :class="m.config.indicatorType === t ? 'border-[#BD8B46]' : 'border-[#E6E6E6]'"
+          class="border border-solid p-2 rounded flex items-center"
           @click="m.config.indicatorType = t"
         >
           <Indicator

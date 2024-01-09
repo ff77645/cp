@@ -15,7 +15,7 @@ export default defineComponent({
       builderStore.noRecord = false
       const value = el.value.ref.value
       if (focusBefore !== value) {
-        builderStore.currentPage.flag++
+        builderStore.currentPage._key++
       }
     }
     return () => <ElInput {...props} ref={el} onFocus={handleFocus} onBlur={handleBlur}></ElInput>

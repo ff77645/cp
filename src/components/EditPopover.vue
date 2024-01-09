@@ -36,8 +36,6 @@ onUnmounted(() => {
 .v-edit {
   box-sizing: border-box;
   position: relative;
-  // border: 1px dashed transparent;
-  // outline: none;
   &::before {
     content: '';
     pointer-events: none;
@@ -49,9 +47,5 @@ onUnmounted(() => {
     border: 1px dashed #bd8b46;
     z-index: 10;
   }
-  // &:focus {
-  // border-color: #bd8b46 !important;
-  // outline-color: #bd8b46 !important;
-  // }
 }
 </style>

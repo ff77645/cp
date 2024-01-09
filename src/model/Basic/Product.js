@@ -5,23 +5,20 @@ export default class Product extends BaseModel {
     super('component')
     this.name = 'Product'
     this.style = {
-      '--bg-color': '#FFFFFF',
-      '--border-style': 'solid',
-      '--border-color': '#464C5B',
-      '--border-width': '1px',
-      '--padding-x': '0px',
-      '--padding-y': '0px',
-      '--text-align': 'left',
-      '--content-space': '12px'
+      '--padding-x': '12px',
+      '--padding-y': '12px',
+      '--content-space': '12px',
+      '--border-radius': '4px',
+      '--font-weight': '400',
+      '--text-align': 'left'
     }
     this.config = {
       projects: [],
       listType: 'big-img',
-      productStyle: 'noBorder',
+      productStyle: 'has-border',
       contents: ['name', 'desc', 'price', 'button'],
-      radius: 'none',
-      fontWeight: '400',
-      imgScale: 1
+      imgScale: 1,
+      markStyle: 'hot2'
     }
   }
 }
