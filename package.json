@@ -10,7 +10,8 @@
     "test:unit": "vitest",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
     "format": "prettier --write src/",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "create": "node scripts/create-component.js"
   },
   "dependencies": {
     "@element-plus/icons-vue": "^2.3.1",
@@ -37,6 +38,7 @@
     "husky": "^8.0.3",
     "jsdom": "^23.0.1",
     "lint-staged": "^15.2.0",
+    "minimist": "^1.2.8",
     "postcss": "^8.4.32",
     "prettier": "^3.0.3",
     "sass": "^1.69.5",
