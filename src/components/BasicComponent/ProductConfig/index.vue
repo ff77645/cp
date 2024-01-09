@@ -148,6 +148,10 @@ const listStyles = [
   {
     name: '一行两个',
     value: 'double-row'
+  },
+  {
+    name: '一行三个',
+    value: 'three-row'
   }
 ]
 </script>
