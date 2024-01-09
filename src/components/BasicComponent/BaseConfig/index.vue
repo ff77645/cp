@@ -5,10 +5,10 @@
     </div>
     <Collapse class="px-0 py-4" title="文本设置"> </Collapse>
     <Collapse class="" title="样式设置">
-      <!-- <div class="flex flex-row flex-nowrap gap-6 items-center mt-4">
+      <div class="flex flex-row flex-nowrap gap-6 items-center mt-4">
         <span class="text-nowrap text-[#666666] text-sm w-20">文本框颜色</span>
         <el-color-picker v-model="m.style.borderColor" />
-      </div> -->
+      </div>
     </Collapse>
   </div>
 </template>
@@ -22,17 +22,4 @@ import ElInput from '@/components/ElInput'
 const builderStore = useBuilderStore()
 // eslint-disable-next-line no-unused-vars
 const { currentComponent: m } = storeToRefs(builderStore)
-const fontSize = [12, 14, 16, 18, 20]
-
-// eslint-disable-next-line no-unused-vars
-const textAlignConfig = [
-  { label: '左', value: 'left' },
-  { label: '中', value: 'center' },
-  { label: '右', value: 'right' }
-]
-// eslint-disable-next-line no-unused-vars
-const fontSizeOptions = fontSize.map((item) => ({
-  label: item + 'px',
-  value: item
-}))
 </script>

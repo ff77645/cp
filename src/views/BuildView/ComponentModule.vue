@@ -77,7 +77,7 @@ const basicComponent = [
     component: 'Product'
   },
   {
-    name: '搜索框x',
+    name: '搜索框',
     icon: Memo,
     component: 'SearchBar'
   },
