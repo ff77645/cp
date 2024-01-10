@@ -14,7 +14,7 @@
       <p class="text-[#666666] text-sm mt-5">框体样式</p>
       <ul class="flex flex-col gap-3 mt-3">
         <li
-          class="border border-solid rounded cursor-pointer"
+          class="border border-solid rounded cursor-pointer overflow-hidden"
           :class="m.style['--border-radius'] === value ? 'border-[#BD8B46]' : 'border-[#E6E6E6]'"
           v-for="value in styleList"
           :key="value"

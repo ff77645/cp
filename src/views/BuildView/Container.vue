@@ -25,7 +25,7 @@ import { useBuilderStore } from '@/stores/builder.js'
 import { storeToRefs } from 'pinia'
 
 const baseCompFile = import.meta.glob(
-  ['@/components/BasicComponent/*/index.vue', '!@/components/BasicComponent/*Config/index.vue'],
+  ['@/components/Basic/*/index.vue', '!@/components/Basic/*Config/index.vue'],
   { eager: true, import: 'default' }
 )
 console.log({ baseCompFile })

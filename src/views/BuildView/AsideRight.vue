@@ -11,7 +11,7 @@ import { defineComponent } from 'vue'
 import { useBuilderStore } from '@/stores/builder.js'
 import { storeToRefs } from 'pinia'
 
-const baseConfigFile = import.meta.glob('@/components/BasicComponent/*Config/index.vue', {
+const baseConfigFile = import.meta.glob('@/components/Basic/*Config/index.vue', {
   eager: true,
   import: 'default'
 })
