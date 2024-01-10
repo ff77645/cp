@@ -31,7 +31,7 @@
 import { Back, Right } from '@element-plus/icons-vue'
 import FullScreen from '@/components/FullScreen.vue'
 import HeaderBack from './components/HeaderBack.vue'
-import { useBuilderStore } from '@/stores/builder.js'
+import { useBuilderStore, useCurrentPage } from '@/stores/builder.js'
 import { toRaw, ref, onUnmounted, watch } from 'vue'
 import { debounce } from 'lodash-es'
 
@@ -44,12 +44,18 @@ const stackWorker = new Worker(url)
 
 const builderStore = useBuilderStore()
 const postMessage = debounce((data) => {
+  console.log('clone', data)
   stackWorker.postMessage({ type: 'add', data })
 }, 300)
 
+const currentPageStore = useCurrentPage()
+currentPageStore.$subscribe((mutation, state) => {
+  console.log({ mutation, state })
+})
 watch(
   builderStore.currentPage,
-  (value) => {
+  (value, oldValue) => {
+    console.log({ value, oldValue })
     if (!isRecord || builderStore.noRecord) {
       isRecord = true
       return
@@ -64,7 +70,7 @@ watch(
   },
   {
     immediate: true,
-    // deep: true,
+    deep: true,
     flush: 'post'
   }
 )
@@ -88,6 +94,7 @@ stackWorker.onmessage = ({ data }) => {
     builderStore.$patch({
       currentPage
     })
+    // builderStore.currentPage = currentPage
     builderStore.currentComponent =
       currentPage.components.find((i) => i.uid === currentComponent.uid) || {}
   }

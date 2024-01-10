@@ -17,7 +17,7 @@
               ? 'text-[var(--el-color-primary)] border-[var(--el-color-primary)]'
               : ''
           "
-          @click.self="setCurrentPage(page)"
+          @click.self="setPage(page)"
         >
           <div class="pl-[6px]">{{ page.title }}</div>
           <div class="flex flex-row flex-nowrap gap-4 text-xl text-[#999999]">
@@ -72,24 +72,31 @@ import { MoreFilled, Edit, House } from '@element-plus/icons-vue'
 import { useBuilderStore } from '@/stores/builder.js'
 import { storeToRefs } from 'pinia'
 import Page from '@/model/Basic/Page'
-const { pageStack, currentPage, currentComponent } = storeToRefs(useBuilderStore())
 
+const builderStore = useBuilderStore()
+const { pageStack, currentPage } = storeToRefs(builderStore)
+
+const setCurrentPage = (page) => {
+  builderStore.setCurrentPage(page)
+  // builderStore.$patch({
+  //   currentPage: cloneDeep(page)
+  // })
+}
 const addPage = () => {
   const page = new Page('页面' + pageStack.value.length)
-  page.uid = pageStack.value.length
   pageStack.value.push(page)
-  currentPage.value = page
-  currentComponent.value = page
+  setCurrentPage(page)
+  builderStore.setCurrentComponent(page)
 }
 
 const deletePage = (page) => {
   pageStack.value.splice(pageStack.value.indexOf(page), 1)
-  currentPage.value = {}
-  currentComponent.value = {}
+  setCurrentPage({})
+  // builderStore.setCurrentComponent(page)
 }
 
-const setCurrentPage = (page) => {
-  currentPage.value = page
-  currentComponent.value = page
+const setPage = (page) => {
+  setCurrentPage(page)
+  builderStore.setCurrentComponent(page)
 }
 </script>
