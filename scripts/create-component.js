@@ -9,7 +9,7 @@ const name = argv._[0]
 if (!name) throw new Error('name is required')
 const pwd = process.cwd()
 
-const componentDir = path.join(pwd, 'src/components/BasicComponent')
+const componentDir = path.join(pwd, 'src/components/Basic')
 const baseComponent = path.join(componentDir, 'BaseText/index.vue')
 const baseConfig = path.join(componentDir, 'BaseConfig/index.vue')
 const destComponentDir = path.join(componentDir, name)

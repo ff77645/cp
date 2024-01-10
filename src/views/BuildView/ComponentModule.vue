@@ -84,7 +84,7 @@ const basicComponent = [
   {
     name: '图文导航x',
     icon: Memo,
-    component: 'GraphicNavigator'
+    component: 'GraphicNav'
   },
   {
     name: '底部导航x',

@@ -8,9 +8,9 @@ export default class Page extends BaseModel {
       backgroundColor: '#ffffff',
       backgroundImage: ''
     }
-    this.shareInfo = {
-      description: '',
-      backgroundImage: ''
+    this.config = {
+      shareText: '',
+      shareImage: ''
     }
     this.components = []
     this._key = 1

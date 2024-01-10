@@ -1,15 +1,15 @@
 <template>
   <div
-    class="absolute z-50 top-1 right-2 flex flex-row flex-nowrap items-center py-1 px-2 rounded"
+    class="absolute z-50 top-1 right-2 flex flex-row flex-nowrap items-center rounded"
     style="
       box-shadow: 0px 2px 6px 1px rgba(0, 0, 0, 0.16);
       background-color: rgba(255, 255, 255, 0.7);
     "
     @click.stop
   >
-    <el-icon @click="onCopy" size="18px" color="#BD8B46"><CopyDocument /></el-icon>
-    <el-divider direction="vertical" />
-    <el-icon @click="onDelete" size="18px" color="#464C5B"><Delete /></el-icon>
+    <el-icon @click="onCopy" class="px-2" size="32px" color="#BD8B46"><CopyDocument /></el-icon>
+    <el-divider direction="vertical" class="!m-0" />
+    <el-icon @click="onDelete" class="px-2" size="32px" color="#464C5B"><Delete /></el-icon>
   </div>
 </template>
 <script setup>

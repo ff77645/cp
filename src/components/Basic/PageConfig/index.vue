@@ -33,7 +33,7 @@
       <span class="text-nowrap text-[#666666] text-sm">页面描述</span>
       <el-input
         class="mt-3"
-        v-model="currentPage.shareInfo.description"
+        v-model="currentPage.config.shareText"
         :rows="5"
         type="textarea"
         resize="none"
@@ -50,8 +50,8 @@
           :before-upload="beforeAvatarUpload"
         >
           <img
-            v-if="currentPage.shareInfo.backgroundImage"
-            :src="currentPage.shareInfo.backgroundImage"
+            v-if="currentPage.config.shareImage"
+            :src="currentPage.config.shareImage"
             class="avatar"
           />
           <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
