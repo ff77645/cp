@@ -1,4 +1,5 @@
 <script setup>
+import { ElConfigProvider } from 'element-plus'
 import { useTheme } from '@/hooks'
 import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
 useTheme()
