@@ -1,5 +1,5 @@
 <template>
-  <section class="min-w-[1024px] h-screen flex flex-col flex-nowrap">
+  <section class="h-screen flex flex-col flex-nowrap">
     <BuildHeader></BuildHeader>
     <section class="flex-auto overflow-hidden flex flex-row flex-nowrap bg-[#F2F3F5]">
       <AsideLeft class="flex-1"></AsideLeft>

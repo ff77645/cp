@@ -10,7 +10,7 @@
       </div>
       <div class="flex flex-row flex-nowrap gap-6 items-center mt-4">
         <span class="text-nowrap text-[#666666] text-sm">背景颜色</span>
-        <el-color-picker v-model="currentPage.styles.backgroundColor" />
+        <el-color-picker v-model="currentPage.style.backgroundColor" />
       </div>
       <div class="flex flex-row flex-nowrap gap-6 items-center mt-4">
         <span class="text-nowrap text-[#666666] text-sm">背景图片</span>
@@ -21,8 +21,8 @@
           :before-upload="beforeAvatarUpload"
         >
           <img
-            v-if="currentPage.styles.backgroundImage"
-            :src="currentPage.styles.backgroundImage"
+            v-if="currentPage.style.backgroundImage"
+            :src="currentPage.style.backgroundImage"
             class="avatar"
           />
           <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>

@@ -42,7 +42,10 @@
         </div>
       </div>
     </div>
-    <div class="flex-1 overflow-hidden">
+    <div
+      class="flex-1 overflow-hidden relative"
+      style="box-shadow: 0px 2px 16px 1px rgba(166, 166, 166, 0.16)"
+    >
       <slot></slot>
     </div>
   </section>

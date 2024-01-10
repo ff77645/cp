@@ -1,7 +1,11 @@
 <template>
   <main class="flex justify-center items-center" style="flex: 2">
     <PhoneEmulate @click="selectPage" :title="currentPage.title">
-      <div ref="sortableRef" class="h-full overflow-auto overflow-x-hidden">
+      <div
+        ref="sortableRef"
+        class="h-full overflow-auto overflow-x-hidden flex flex-col flex-nowrap"
+        :style="currentPage.style"
+      >
         <TransitionGroup type="transition" name="fade">
           <component
             isEdit
@@ -13,6 +17,7 @@
             @click.stop="selectComponent(item)"
           ></component>
         </TransitionGroup>
+        <div v-if="hasTabBar" class="no-drag flex-1"></div>
       </div>
     </PhoneEmulate>
   </main>
@@ -28,7 +33,6 @@ const baseCompFile = import.meta.glob(
   ['@/components/Basic/*/index.vue', '!@/components/Basic/*Config/index.vue'],
   { eager: true, import: 'default' }
 )
-console.log({ baseCompFile })
 
 const baseComponents = Object.keys(baseCompFile).reduce((result, path) => {
   const name = path.split('/').at(-2)
@@ -52,9 +56,13 @@ export default defineComponent({
         currentPage.value.components = val.map(toRaw)
       }
     })
+    const hasTabBar = computed(() =>
+      currentPage.value.components.some((item) => item.name === 'TabBar')
+    )
     useDraggable(sortableRef, components, {
       animation: 150,
-      group: 'component'
+      group: 'component',
+      filter: '.no-drag'
     })
 
     const selectComponent = (component) => {
@@ -70,7 +78,8 @@ export default defineComponent({
       currentPage,
       sortableRef,
       selectComponent,
-      currentComponent
+      currentComponent,
+      hasTabBar
     }
   }
 })

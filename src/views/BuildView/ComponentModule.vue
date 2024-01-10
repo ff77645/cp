@@ -82,12 +82,12 @@ const basicComponent = [
     component: 'SearchBar'
   },
   {
-    name: '图文导航x',
+    name: '图文导航',
     icon: Memo,
     component: 'GraphicNav'
   },
   {
-    name: '底部导航x',
+    name: '底部导航',
     icon: Memo,
     component: 'TabBar'
   }
@@ -95,6 +95,12 @@ const basicComponent = [
 
 const dragRef = ref(null)
 let currentUid = ''
+let isClone = true
+
+const judgeClone = (instance) => {
+  if (instance.name !== 'TabBar') return true
+  return !builderStore.currentPage.components.some((i) => i.name === 'TabBar')
+}
 
 useDraggable(dragRef, basicComponent, {
   animation: 150,
@@ -104,8 +110,10 @@ useDraggable(dragRef, basicComponent, {
     const instance = createCompnent(el.component)
     console.log('添加:', el.component)
     currentUid = instance.uid
+    isClone = judgeClone(instance)
     return instance
   },
+  onMove: () => isClone,
   onEnd() {
     const component = builderStore.currentPage.components.find((item) => item.uid === currentUid)
     if (!component) return

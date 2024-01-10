@@ -4,8 +4,8 @@ export default class Page extends BaseModel {
   constructor(title) {
     super('page')
     this.title = title
-    this.styles = {
-      backgroundColor: '#ffffff',
+    this.style = {
+      backgroundColor: '#F4F4F4',
       backgroundImage: ''
     }
     this.config = {
