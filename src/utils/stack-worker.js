@@ -13,7 +13,6 @@ class PageStack {
       isFirst: this.current === -Math.min(this.max, this.data.length),
       current: this.current
     }
-    // console.log('this.current', this.current)
     if (!noData) {
       data.data = this.data.at(this.current)
     }
@@ -33,10 +32,7 @@ class PageStack {
   }
   // 回退
   back() {
-    if (this.current <= -this.max) {
-      return this.postMsg()
-    }
-    this.current--
+    if (this.current > -this.max) this.current--
     return this.postMsg()
   }
   // 前进
@@ -52,6 +48,5 @@ class PageStack {
 }
 const pageStack = new PageStack()
 onmessage = function ({ data }) {
-  // console.log('worker event', data.type)
   pageStack[data.type](data.data)
 }

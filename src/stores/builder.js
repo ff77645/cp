@@ -6,6 +6,7 @@ import { shortid } from '@/utils'
 
 export const useCurrentPage = defineStore('currentPage', () => {
   const home = new Page('首页')
+  home.isHome = true
   const currentPage = ref(home)
   const setCurrentPage = (page) => {
     currentPage.value = page
@@ -22,13 +23,11 @@ export const useBuilderStore = defineStore('builder', () => {
   const { currentPage } = storeToRefs(currentPageStore)
 
   const pageStack = ref([currentPage.value])
-  // const currentPage = ref(home)
   const currentComponent = ref({})
   const noRecord = ref(false)
+  const homeUid = ref(currentPage.value.uid)
   const { setCurrentPage } = currentPageStore
-  // const setCurrentPage = (page) => {
-  //   currentPage.value = page
-  // }
+
   const setCurrentComponent = (component) => {
     currentComponent.value = component
   }
@@ -46,6 +45,7 @@ export const useBuilderStore = defineStore('builder', () => {
   }
 
   return {
+    homeUid,
     noRecord,
     pageStack,
     currentPage,

@@ -97,7 +97,7 @@ export default defineComponent({
   transform: scaleY(0.01) translate(30px, 0);
 }
 
-/* .fade-leave-active {
+.fade-leave-active {
   position: absolute;
-} */
+}
 </style>

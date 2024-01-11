@@ -18,5 +18,5 @@ import { ref } from 'vue'
 import PageModule from './PageModule.vue'
 import ComponentModule from './ComponentModule.vue'
 
-const component = ref('components')
+const component = ref('pages')
 </script>

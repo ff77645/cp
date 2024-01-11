@@ -32,7 +32,7 @@ import { Back, Right } from '@element-plus/icons-vue'
 import FullScreen from '@/components/FullScreen.vue'
 import HeaderBack from './components/HeaderBack.vue'
 import { useBuilderStore, useCurrentPage } from '@/stores/builder.js'
-import { toRaw, ref, onUnmounted, watch } from 'vue'
+import { toRaw, ref, onUnmounted } from 'vue'
 import { debounce } from 'lodash-es'
 
 const isFirst = ref(true)
@@ -43,37 +43,32 @@ const url = new URL('../../utils/stack-worker.js', import.meta.url)
 const stackWorker = new Worker(url)
 
 const builderStore = useBuilderStore()
+let lastPageUid = ''
 const postMessage = debounce((data) => {
-  console.log('clone', data)
+  // console.log('clone', data)
+  if (data.currentPage.uid !== lastPageUid) stackWorker.postMessage({ type: 'clear' })
+  lastPageUid = data.currentPage.uid
   stackWorker.postMessage({ type: 'add', data })
 }, 300)
 
 const currentPageStore = useCurrentPage()
-currentPageStore.$subscribe((mutation, state) => {
-  console.log({ mutation, state })
-})
-watch(
-  builderStore.currentPage,
-  (value, oldValue) => {
-    console.log({ value, oldValue })
-    if (!isRecord || builderStore.noRecord) {
-      isRecord = true
-      return
-    }
-    const data = {
-      currentPage: toRaw(value),
-      currentComponent: {
-        uid: builderStore.currentComponent.uid
-      }
-    }
-    postMessage(data)
-  },
-  {
-    immediate: true,
-    deep: true,
-    flush: 'post'
+currentPageStore.$subscribe(({ events }, state) => {
+  if (events.key === 'title') return
+  if (!isRecord || builderStore.noRecord) {
+    isRecord = true
+    return
   }
-)
+  // console.log('mutaion',events);
+  const { currentPage } = toRaw(state)
+  const value = currentPage._rawValue
+  const data = {
+    currentPage: value,
+    currentComponent: {
+      uid: builderStore.currentComponent.uid
+    }
+  }
+  postMessage(data)
+})
 
 const handleBack = () => {
   if (isFirst.value) return
@@ -91,10 +86,9 @@ stackWorker.onmessage = ({ data }) => {
   if (data.data) {
     isRecord = false
     const { currentComponent, currentPage } = data.data
-    builderStore.$patch({
-      currentPage
-    })
-    // builderStore.currentPage = currentPage
+    const idx = builderStore.pageStack.findIndex((i) => i.uid === currentPage.uid)
+    builderStore.currentPage = currentPage
+    builderStore.pageStack[idx] = currentPage
     builderStore.currentComponent =
       currentPage.components.find((i) => i.uid === currentComponent.uid) || {}
   }
