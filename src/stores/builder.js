@@ -5,9 +5,9 @@ import { cloneDeep } from 'lodash-es'
 import { shortid } from '@/utils'
 
 export const useCurrentPage = defineStore('currentPage', () => {
-  const home = new Page('首页')
-  home.isHome = true
-  const currentPage = ref(home)
+  const page = new Page('首页')
+  page.isHome = true
+  const currentPage = ref(page)
   const setCurrentPage = (page) => {
     currentPage.value = page
   }
@@ -18,7 +18,6 @@ export const useCurrentPage = defineStore('currentPage', () => {
 })
 
 export const useBuilderStore = defineStore('builder', () => {
-  // const home = new Page('首页')
   const currentPageStore = useCurrentPage()
   const { currentPage } = storeToRefs(currentPageStore)
 

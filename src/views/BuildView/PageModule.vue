@@ -7,59 +7,22 @@
       >
         页面管理（{{ pageStack.length }}）
       </div>
-      <div class="flex-1 overflow-auto py-1">
-        <div
-          v-for="page in pageStack"
-          :key="page.uid"
-          class="flex flex-row flex-nowrap items-center justify-between box-border h-[40px] px-[10px] rounded border border-solid mt-3 cursor-pointer select-none"
-          :class="
-            page.uid === currentPage.uid
-              ? 'text-[var(--el-color-primary)] border-[var(--el-color-primary)]'
-              : 'border-[#E6E6E6] text-[#464C5B]'
-          "
-          @click.self="setPage(page)"
-        >
-          <div class="pl-[6px]">{{ page.title }}</div>
-          <div class="flex flex-row flex-nowrap gap-4 text-xl text-[#999999]">
-            <el-tooltip
-              effect="dark"
-              content="设为首页"
-              placement="bottom-start"
-              :show-after="200"
-              :hide-after="0"
-            >
-              <el-icon @click="setHome(page)" :color="page.uid === homeUid ? '#BD8B46' : '#999999'"
-                ><House
-              /></el-icon>
-            </el-tooltip>
-            <el-tooltip
-              effect="dark"
-              content="编辑"
-              placement="bottom-start"
-              :show-after="200"
-              :hide-after="0"
-            >
-              <el-icon @click="setPageName(page)"><Edit /></el-icon>
-            </el-tooltip>
-            <el-popover
-              placement="bottom-start"
-              popper-style="min-width: 90px"
-              :width="90"
-              effect="dark"
-              :show-after="200"
-              :hide-after="100"
-            >
-              <template #reference>
-                <el-icon><MoreFilled /></el-icon>
-              </template>
-              <ul class="flex flex-col gap-2">
-                <li @click="copyPage(page)" class="cursor-pointer">复制</li>
-                <li @click="deletePage(page)" class="cursor-pointer">删除</li>
-                <li @click="saveAsTemplate(page)" class="cursor-pointer">存为模板</li>
-              </ul>
-            </el-popover>
-          </div>
-        </div>
+      <div ref="sortableRef" class="flex-1 overflow-auto py-1 relative">
+        <TransitionGroup type="transition" name="fade">
+          <PageItem
+            v-for="page in pageStack"
+            :isChecked="page.uid === currentPage.uid"
+            :isHome="page.uid === homeUid"
+            :key="page.uid"
+            :page="page"
+            @setPage="setPage"
+            @setHome="setHome"
+            @setPageName="setPageName"
+            @copyPage="copyPage"
+            @deletePage="deletePage"
+            @saveAsTemplate="saveAsTemplate"
+          ></PageItem>
+        </TransitionGroup>
       </div>
     </div>
     <!-- bottom -->
@@ -70,17 +33,24 @@
   </div>
 </template>
 <script setup>
-import { MoreFilled, Edit, House } from '@element-plus/icons-vue'
 import { useBuilderStore } from '@/stores/builder.js'
 import { storeToRefs } from 'pinia'
 import Page from '@/model/Basic/Page'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { cloneDeep } from 'lodash-es'
-import { toRaw } from 'vue'
+import { toRaw, ref } from 'vue'
 import { shortid } from '@/utils/index'
+import PageItem from './components/PageItem.vue'
+import { useDraggable } from 'vue-draggable-plus'
 
+const sortableRef = ref(null)
 const builderStore = useBuilderStore()
 const { pageStack, currentPage, homeUid } = storeToRefs(builderStore)
+
+useDraggable(sortableRef, pageStack, {
+  animation: 150,
+  direction: 'vertical'
+})
 
 const setCurrentPage = (page) => {
   builderStore.setCurrentPage(page)
@@ -102,6 +72,7 @@ const addPage = () => {
     cancelButtonText: '取消',
     inputPlaceholder: '不超过10个字',
     inputValidator(value) {
+      if (!value) return '页面名称不能为空'
       if (value.length > 10) return '最多10个字'
       return true
     }
@@ -151,6 +122,7 @@ const setPageName = (page) => {
     cancelButtonText: '取消',
     inputPlaceholder: '不超过10个字',
     inputValidator(value) {
+      if (!value) return '页面名称不能为空'
       if (value.length > 10) return '最多10个字'
       return true
     }
@@ -174,3 +146,20 @@ const saveAsTemplate = (page) => {
     .catch(() => {})
 }
 </script>
+<style>
+.fade-move,
+.fade-enter-active,
+.fade-leave-active {
+  transition: all 0.3s cubic-bezier(0.55, 0, 0.1, 1);
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+  transform: scaleY(0.01) translate(30px, 0);
+}
+
+.fade-leave-active {
+  position: absolute;
+}
+</style>

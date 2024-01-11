@@ -20,11 +20,9 @@ import { useBuilderStore } from '@/stores/builder.js'
 const { deleteCurrentComponent, copyCurrentComponent } = useBuilderStore()
 
 const onCopy = () => {
-  console.log('EditPopover copy')
   copyCurrentComponent()
 }
 const onDelete = () => {
-  console.log('EditPopover delete')
   deleteCurrentComponent()
 }
 

@@ -8,9 +8,10 @@ class PageStack {
     this.cacheMax = this.max + Math.floor(this.max / 3)
   }
   postMsg(noData) {
+    const l = this.data.length
     const data = {
       isLast: this.current === -1,
-      isFirst: this.current === -Math.min(this.max, this.data.length),
+      isFirst: l ? this.current === -Math.min(this.max, l) : true,
       current: this.current
     }
     if (!noData) {
@@ -44,6 +45,7 @@ class PageStack {
   clear() {
     this.data = []
     this.current = -1
+    this.postMsg(true)
   }
 }
 const pageStack = new PageStack()

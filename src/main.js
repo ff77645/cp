@@ -2,6 +2,7 @@ import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import './styles/tailwind/style.css'
 import './styles/element/theme.scss'
+import './styles/common.css'
 
 import App from './App.vue'
 import router from './router'

@@ -34,3 +34,13 @@ export function rgbToHex(rgb) {
   const b = rgb[2].toString(16).padStart(2, '0')
   return `#${r}${g}${b}`
 }
+
+// file 转 base64
+export function fileToBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader()
+    reader.readAsDataURL(file)
+    reader.onload = () => resolve(reader.result)
+    reader.onerror = (error) => reject(error)
+  })
+}

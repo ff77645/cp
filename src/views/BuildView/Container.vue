@@ -24,7 +24,7 @@
 </template>
 <script>
 import { computed, ref, defineComponent, toRaw } from 'vue'
-import PhoneEmulate from '@/components/PhoneEmulate.vue'
+import PhoneEmulate from '@/components/PhoneEmulate/index.vue'
 import { useDraggable } from 'vue-draggable-plus'
 import { useBuilderStore } from '@/stores/builder.js'
 import { storeToRefs } from 'pinia'
