@@ -39,6 +39,8 @@ export function useTheme(options) {
     } else {
       themeColor.value = storeThemeColor
     }
+  } else {
+    setThemeColor(themeColor.value)
   }
   return [themeColor, setThemeColor]
 }

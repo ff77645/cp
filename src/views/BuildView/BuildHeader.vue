@@ -9,7 +9,7 @@
       <FullScreen size="26"></FullScreen>
       <div class="text-[16px]">
         <span class="text-[#999999]">当前页面: </span>
-        <span class="text-[#464C5B]"> {{ pageStore.currentPage.title }}</span>
+        <span class="text-[#464C5B]"> {{ builderStore.currentPage.title }}</span>
       </div>
       <RecordAction></RecordAction>
     </div>
@@ -29,10 +29,10 @@
 import FullScreen from '@/components/FullScreen.vue'
 import HeaderBack from './components/HeaderBack.vue'
 import RecordAction from './components/RecordAction.vue'
-import { useCurrentPage } from '@/stores/builder.js'
+import { useBuilderStore } from '@/stores/builder.js'
 import { ref } from 'vue'
 import ShopInfoDialog from './components/ShopInfoDialog.vue'
 
-const pageStore = useCurrentPage()
+const builderStore = useBuilderStore()
 const shopInfoRef = ref(null)
 </script>
