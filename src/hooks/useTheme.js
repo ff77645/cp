@@ -2,11 +2,13 @@ import { ref } from 'vue'
 import { mixColors, hexToRgb } from '@/utils'
 
 export function useTheme(options) {
-  options = Object.assign({ type: 'primary', mode: 'light' }, options)
-  const { type, mode } = options
-  const themeId = `theme_${type}_${mode}`
+  options = Object.assign({ type: 'primary' }, options)
+  const { type } = options
+  const mode = 'light'
+  const themeId = `theme_${type}_custom`
   const themeColor = ref('#BD8B46')
-  const mixColor = mode === 'light' ? '#ffffff' : '#000000'
+  const lightMixColor = '#ffffff'
+  const darkMixColor = '#000000'
   const storeThemeColor = localStorage.getItem(themeId)
   const currentThemeColor = getComputedStyle(document.documentElement).getPropertyValue(
     `--el-color-${type}`
@@ -17,8 +19,9 @@ export function useTheme(options) {
     styles += `--el-color-${type}:${color};`
     styles += `--el-color-${type}-rgb:${hexToRgb(color)};`
     for (let i = 1; i < 10; i++) {
-      styles += `--el-color-${type}-${mode}-${i}:${mixColors(mixColor, color, 1 - i / 10)};`
+      styles += `--el-color-${type}-${mode}-${i}:${mixColors(lightMixColor, color, 1 - i / 10)};`
     }
+    styles += `--el-color-${type}-dark-2:${mixColors(darkMixColor, color, 1 - 2 / 10)};`
     styles += '}'
     let el = document.getElementById(themeId)
     if (el) {
