@@ -9,27 +9,27 @@ import { Back, Right } from '@element-plus/icons-vue'
 import { useBuilderStore, useCurrentPage } from '@/stores/builder.js'
 import { toRaw, ref, onUnmounted, onMounted } from 'vue'
 import { debounce } from 'lodash-es'
+import { useStackWorker } from '@/hooks'
 
 const isFirst = ref(true)
 const isLast = ref(true)
 let isRecord = true
 
-const url = new URL('@/utils/stack-worker.js', import.meta.url)
-const stackWorker = new Worker(url)
+const { stackWorker, postMessage } = useStackWorker()
 
 const builderStore = useBuilderStore()
 let lastPageUid = ''
-const postMessage = debounce((data) => {
+const postMessageDebounce = debounce((data) => {
   // console.log('clone', data)
-  if (data.currentPage.uid !== lastPageUid) stackWorker.postMessage({ type: 'clear' })
+  if (data.currentPage.uid !== lastPageUid) postMessage({ type: 'clear' })
   lastPageUid = data.currentPage.uid
-  stackWorker.postMessage({ type: 'add', data })
+  postMessage({ type: 'add', data })
 }, 300)
 
 const currentPageStore = useCurrentPage()
 currentPageStore.$subscribe(({ events }, state) => {
   if (events.key === 'title') return
-  if (!isRecord || builderStore.noRecord) {
+  if (!isRecord) {
     isRecord = true
     return
   }
@@ -42,20 +42,21 @@ currentPageStore.$subscribe(({ events }, state) => {
       uid: builderStore.currentComponent.uid
     }
   }
-  postMessage(data)
+  postMessageDebounce(data)
 })
 
 const handleBack = () => {
   if (isFirst.value) return
-  stackWorker.postMessage({ type: 'back' })
+  postMessage({ type: 'back' })
 }
 
 const handleForward = () => {
   if (isLast.value) return
-  stackWorker.postMessage({ type: 'forward' })
+  postMessage({ type: 'forward' })
 }
 
 stackWorker.onmessage = ({ data }) => {
+  console.log(data)
   isFirst.value = data.isFirst
   isLast.value = data.isLast
   if (data.data) {
@@ -70,7 +71,7 @@ stackWorker.onmessage = ({ data }) => {
   }
 }
 onMounted(() => {
-  postMessage({
+  postMessageDebounce({
     currentPage: toRaw(builderStore.currentPage),
     currentComponent: {
       uid: builderStore.currentComponent.uid
@@ -78,7 +79,7 @@ onMounted(() => {
   })
 })
 onUnmounted(() => {
-  stackWorker.postMessage({ type: 'clear' })
+  postMessage({ type: 'clear' })
   stackWorker.terminate()
 })
 </script>
