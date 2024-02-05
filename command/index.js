@@ -34,8 +34,7 @@ export async function handlePaste(_path,options){
 		if(!isExist(groupDir)) return console.log(`分组:${group} 不存在`)
 		const filePath = getGroupFilePath(group)
 		console.log({filePath})
-		// if(!isExist(filePath)) return console.log('路径无效')
-		// fs.copySync(filePath,path.join(destPath,path.basename(filePath)))
+		fs.copySync(filePath,path.join(destPath,path.basename(filePath)))
 	}else{
 		const lastCopy = getConfig('lastCopy')
 		if(!lastCopy || !isExist(lastCopy)) return console.log('暂无可复制文件')
